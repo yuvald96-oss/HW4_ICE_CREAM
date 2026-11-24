@@ -12,14 +12,15 @@ from PySide6.QtWidgets import (
 )
 
 HERE = Path(__file__).parent
-GITHUB_URL = "https://github.com/YOUR-USER/YOUR-REPO"  # TODO: put your repo URL here
+GITHUB_URL = "https://github.com/yuvald96-oss/HW4_ICE_CREAM"  
 
 
 class IceCreamWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # TODO (student): define the two lists that will hold the file data
+        self.temperatures = []
+        self.revenues = []
 
         self.setWindowTitle("Ice Cream Revenue")
         self.resize(900, 680)
@@ -50,7 +51,7 @@ class IceCreamWindow(QMainWindow):
         top.addWidget(self.about_button)
         root.addLayout(top)
 
-        # matplotlib canvas + toolbar (zoom, pan, save figure)
+        
         plot_card = QWidget()
         plot_card.setObjectName("plotCard")
         card_layout = QVBoxLayout(plot_card)
@@ -66,23 +67,21 @@ class IceCreamWindow(QMainWindow):
 
     # ------------------------------------------------------------ plotting
     def plot_data(self):
-        """Draws on the graph. Currently a TEMPORARY placeholder plot.
-
-        TODO (student): replace the placeholder with the real graph:
-          - scatter with point size 1
-          - revenue on Y, outside temperature on X
-          - hide the top and right spines
-          - correct title and axis labels
-          - then call self.draw_trend_line(x, y) with your two lists
-        """
         self.ax.clear()
 
-        # --- temporary placeholder (delete me) ---
-        x = np.linspace(0, 10, 50)
-        self.ax.plot(x, np.sin(x))
-        self.ax.set_title("Temporary plot - load a file")
-        # -----------------------------------------
+        if not self.temperatures:
+            self.ax.set_title("Load a data file to see the graph")
+            self.canvas.draw()
+            return
 
+        self.ax.scatter(self.temperatures, self.revenues, s=1)
+        self.ax.spines["top"].set_visible(False)
+        self.ax.spines["right"].set_visible(False)
+        self.ax.set_title("Ice Cream Revenue vs. Outside Temperature")
+        self.ax.set_xlabel("Outside Temperature (°C)")
+        self.ax.set_ylabel("Revenue ($)")
+
+        self.draw_trend_line(self.temperatures, self.revenues)
         self.canvas.draw()
 
     def draw_trend_line(self, x, y):
@@ -117,9 +116,22 @@ class IceCreamWindow(QMainWindow):
             return
         self.file_label.setText(os.path.basename(file_name))
 
-        # TODO (student):
-        #   open file_name for reading and scan its data into the two lists
-        #   defined in __init__, then call self.plot_data()
+        self.temperatures = []
+        self.revenues = []
+        with open(file_name, "r", encoding="utf-8") as f:
+            for line in f:
+                parts = line.strip().split(",")
+                if len(parts) < 2:
+                    continue
+                try:
+                    temp = float(parts[0])
+                    revenue = float(parts[1])
+                except ValueError:
+                    continue  # skips the header row / bad lines
+                self.temperatures.append(temp)
+                self.revenues.append(revenue)
+
+        self.plot_data()
 
     def on_about_clicked(self):
         QMessageBox.about(
