@@ -1,0 +1,59 @@
+/* Ice Cream Revenue - stylesheet */
+
+QMainWindow, QWidget {
+    background-color: #fff7f3;
+    color: #3f2a2a;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+}
+
+QLabel#titleLabel {
+    font-size: 26px;
+    font-weight: 700;
+    color: #be185d;
+}
+
+QLabel#fileLabel {
+    color: #7c5c5c;
+    font-style: italic;
+    padding-left: 8px;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    color: #be185d;
+    border: 1px solid #fbcfe8;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 600;
+}
+QPushButton:hover   { background-color: #fdf2f8; }
+QPushButton:pressed { background-color: #fce7f3; }
+
+QPushButton#primaryButton {
+    background-color: #db2777;
+    color: #ffffff;
+    border: none;
+}
+QPushButton#primaryButton:hover   { background-color: #be185d; }
+QPushButton#primaryButton:pressed { background-color: #9d174d; }
+
+QWidget#plotCard {
+    background-color: #ffffff;
+    border: 1px solid #fbcfe8;
+    border-radius: 12px;
+}
+
+QToolBar {
+    background: transparent;
+    border: none;
+    spacing: 4px;
+}
+QToolButton {
+    background: transparent;
+    border-radius: 6px;
+    padding: 4px;
+}
+QToolButton:hover { background-color: #fdf2f8; }
+
+QMessageBox QLabel { background: transparent; }
